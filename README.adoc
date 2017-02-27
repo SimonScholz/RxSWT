@@ -1,0 +1,9 @@
+== RxSWT
+
+image:https://travis-ci.org/SimonScholz/RxSWT.svg?branch=master["Build Status", link="https://travis-ci.org/SimonScholz/RxSWT"]
+
+Reactive Programming in SWT
+
+This Project is under development...
+
+Tutorials and how to use guides will follow...
