@@ -1,0 +1,28 @@
+apply plugin: 'java-library'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+	compile (group: 'org.eclipse.platform', name: 'org.eclipse.swt', version: '3.105.2') {
+		 exclude module: 'org.eclipse.swt.gtk.linux.aarch64'
+		 exclude module: 'org.eclipse.swt.gtk.linux.arm'
+	}
+ 	compile 'io.reactivex.rxjava2:rxjava:2.0.6'
+
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.12'
+}
+
+jar.doFirst {
+    manifest {
+        def manifestFile = "${projectDir}/META-INF/MANIFEST.MF"
+        if ( new File( manifestFile ).exists() )
+            from ( manifestFile )
+
+        attributes 'Build-date': new Date();
+        attributes 'Application-Version': project.version
+    }
+}
+
