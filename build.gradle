@@ -1,8 +1,16 @@
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
 apply plugin: 'java-library'
+apply plugin: 'maven-publish'
 
 repositories {
     jcenter()
 }
+
+group 'io.reactivex.swt'
+version = '0.1.0'
 
 import org.apache.tools.ant.taskdefs.condition.Os
 
@@ -51,6 +59,70 @@ jar.doFirst {
         attributes 'Build-date': new Date();
         attributes 'Application-Version': project.version
     }
+}
+
+def pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id "simon-scholz"
+            name "Simon Scholz"
+            email "simon.scholz@vogella.com"
+        }
+    }
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
+publishing {
+	publications {
+		MyPublication(MavenPublication) {
+			from components.java
+ 			artifact sourceJar {
+                classifier "sources"
+            }			
+            groupId 'io.reactivex.swt'
+    		artifactId 'io.reactivex.swt'
+    		version '0.1.0'
+    		pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'RxSWT for the usage of RxJava with SWT')
+                root.appendNode('name', 'RxSWT')
+                root.appendNode('url', 'https://github.com/SimonScholz/RxSWT')
+                root.children().last() + pomConfig
+            }
+		}
+	}
+}
+
+bintray {
+	user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+	key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+	publications = ['RxSWT']
+	publish = true
+	pkg {
+		repo = 'maven'
+		name = 'RxSWT'
+		userOrg = 'vogellacompany'
+		licenses = ['Apache-2.0']
+		vcsUrl = 'https://github.com/SimonScholz/RxSWT.git'
+		githubRepo = 'https://github.com/SimonScholz/RxSWT'
+		publicDownloadNumbers = true
+		version {
+        	name = '0.1.0'
+        	desc = 'RxSWT for the usage of RxJava with SWT'
+        	released  = new Date()
+        	vcsTag = '0.1.0'
+ 	   }
+	}
 }
 
 task wrapper(type: Wrapper) {
