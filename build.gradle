@@ -4,6 +4,7 @@ plugins {
 
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
+apply plugin: 'jacoco'
 
 repositories {
     jcenter()
@@ -84,7 +85,7 @@ task sourceJar(type: Jar) {
 
 publishing {
 	publications {
-		MyPublication(MavenPublication) {
+		RxSWT(MavenPublication) {
 			from components.java
  			artifact sourceJar {
                 classifier "sources"
@@ -124,6 +125,25 @@ bintray {
  	   }
 	}
 }
+
+task GCandMem(dependsOn: 'check') << {
+    System.gc()
+    Thread.sleep(200)
+    print("Memory usage: ")
+    println(java.lang.management.ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024.0 / 1024.0)
+}
+
+jacocoTestReport {
+    reports {
+        csv.enabled false
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+jacocoTestReport.dependsOn GCandMem
+
+build.dependsOn jacocoTestReport
 
 task wrapper(type: Wrapper) {
     gradleVersion = '3.4'
