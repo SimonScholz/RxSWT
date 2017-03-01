@@ -141,11 +141,10 @@ task GCandMem(dependsOn: 'check') {
 }
 
 jacocoTestReport {
-    reports {
-        csv.enabled false
-        xml.enabled = true
-        html.enabled = true
-    }
+	reports {
+		xml.enabled true
+		html.enabled false
+	}
 }
 
 jacocoTestReport.dependsOn GCandMem
