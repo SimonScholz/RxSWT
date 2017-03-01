@@ -1,8 +1,4 @@
-== RxSWT
-
-image:https://travis-ci.org/SimonScholz/RxSWT.svg?branch=master["Build Status", link="https://travis-ci.org/SimonScholz/RxSWT"]
-
-image:https://codecov.io/gh/SimonScholz/RxSWT/branch/master/graph/badge.svg["Code Coverage Status", link="https://codecov.io/gh/SimonScholz/RxSWT"]
+== RxSWT image:https://travis-ci.org/SimonScholz/RxSWT.svg?branch=master["Build Status", link="https://travis-ci.org/SimonScholz/RxSWT"] image:https://codecov.io/gh/SimonScholz/RxSWT/branch/master/graph/badge.svg["Code Coverage Status", link="https://codecov.io/gh/SimonScholz/RxSWT"]
 
 Reactive Programming in SWT
 
