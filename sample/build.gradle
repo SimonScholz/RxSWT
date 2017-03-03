@@ -1,0 +1,18 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+def final retrofitVersion = '2.2.0'
+
+dependencies {
+    compile project(':rxswt')
+
+    compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    compile "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
+    compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+
+    testCompile 'junit:junit:4.12'
+}
+
+mainClassName = 'io.reactivex.swt.App'
+
+
