@@ -111,9 +111,8 @@ bintray {
 	publications = ['RxSWT']
 	publish = true
 	pkg {
-		repo = 'maven'
+		repo = 'RxJava-Extensions'
 		name = 'RxSWT'
-		userOrg = 'vogellacompany'
 		licenses = ['Apache-2.0']
 		vcsUrl = 'https://github.com/SimonScholz/RxSWT.git'
 		githubRepo = 'https://github.com/SimonScholz/RxSWT'
