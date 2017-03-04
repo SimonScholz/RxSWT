@@ -1,7 +1,149 @@
-== RxSWT image:https://travis-ci.org/SimonScholz/RxSWT.svg?branch=master["Build Status", link="https://travis-ci.org/SimonScholz/RxSWT"] image:https://codecov.io/gh/SimonScholz/RxSWT/branch/master/graph/badge.svg["Code Coverage Status", link="https://codecov.io/gh/SimonScholz/RxSWT"]
+= RxSWT - Reactive Programming in SWT
 
-Reactive Programming in SWT
+image:https://travis-ci.org/SimonScholz/RxSWT.svg?branch=master["Build Status", link="https://travis-ci.org/SimonScholz/RxSWT"] image:https://codecov.io/gh/SimonScholz/RxSWT/branch/master/graph/badge.svg["Code Coverage Status", link="https://codecov.io/gh/SimonScholz/RxSWT"]
 
-This Project is under development...
+RxSWT is based on http://github.com/ReactiveX/RxJava[RxJava 2] and provides a custom scheduler for synchronizing with the SWT UI thread.
 
-Tutorials and how to use guides will follow...
+The coding is adapted from https://github.com/ReactiveX/RxAndroid[RxAndroid], since Android also has a main thread, which needs to be synchronized with the UI like SWT.
+
+== Binaries
+
+The binaries are available on Bintray: https://dl.bintray.com/simon-scholz/RxJava-Extensions/
+
+=== Gradle
+
+[source, groovy]
+----
+repositories {
+	jcenter()
+	maven {
+		url 'https://dl.bintray.com/simon-scholz/RxJava-Extensions/'
+	}
+}
+
+dependencies {
+	compile 'io.reactivex.swt:rxswt:0.1.0'
+
+	// other dependencies ...
+}
+----
+
+=== Maven
+
+[source, xml]
+----
+<repositories>
+    <repository>
+      <id>RxExtensions</id>
+      <url>https://dl.bintray.com/simon-scholz/RxJava-Extensions/</url>
+    </repository>
+ </repositories>
+
+<dependencies>
+ <dependency>
+     <groupId>io.reactivex.swt</groupId>
+     <artifactId>rxswt</artifactId>
+     <version>0.1.0</version>
+  </dependency>
+</dependencies>
+----
+
+=== P2 Update Site
+
+Since for Eclipse RCP development SWT is mainly used as UI toolkit it is likely that you'll want to obtain RxJava and RxSWT from a P2 update site.
+
+A P2 update site is available here: https://dl.bintray.com/simon-scholz/RxJava-OSGi/
+
+image::img/p2-install.png[] 
+
+A sample project containing an Eclipse 4 sample application using RxJava and RxSWT can be found here: https://github.com/SimonScholz/rxjava-osgi[rxjava-osgi]
+
+== Samples
+
+A sample SWT application is part of this Git repository. See <<building>> to run the sample application.
+
+But there is also a https://github.com/SimonScholz/rxjava-osgi[rxjava-osgi] repo, which contains the build for a p2 updatesite and a Sample Eclipse 4 application using http://github.com/ReactiveX/RxJava[RxJava 2] and RxSWT.
+
+Using the RxSWT `Scheduler` is fairly simple.
+
+[source, java]
+----
+Observable.create(emitter -> {
+ // ... do some heaving processing, which shouldn't be done on the main thread
+}).subscribeOn(Schedulers.io())
+  .observeOn(SwtSchedulers.currentDisplayThread())
+  .subscribe(System.out::println, Throwable::printStackTrace);
+----
+
+Besides using the current `Display`, the default `Display` or a user defined `Display` can be used:
+
+[source, java]
+----
+Display display = new Display();
+Observable.create(emitter -> {
+  // ... do some heaving processing, which shouldn't be done on the main thread
+}).subscribeOn(Schedulers.io())
+  .observeOn(SwtSchedulers.from(display))
+  .subscribe(System.out::println, Throwable::printStackTrace);
+----
+
+== Working with the code
+
+=== Getting the code from GitHub
+
+The code can simply be cloned from GitHub by using the command line:
+
+[source, console]
+----
+# Using HTTPS
+$ git clone https://github.com/SimonScholz/RxSWT.git
+
+# Using SSH
+$ git clone git@github.com:SimonScholz/RxSWT.git
+----
+
+Or you can use your favorite Git tooling, e.g., EGit Eclipse Git integration.
+
+[[building]]
+=== Building
+
+Unlike many other Eclipse related project Gradle is being used instead of Maven Tycho.
+
+[source, console]
+----
+$ cd RxSWT
+$ ./gradlew build
+----
+
+Besides just building the projects you can also directly run the sample application by using the `run` task:
+
+[source, console]
+----
+$ cd RxSWT
+$ ./gradlew run
+----
+
+=== Importing the code
+
+In order to use and run the code in Eclipse you need to install the Buildship tooling, which is the official Gradle tooling for Eclipse.
+
+Buildship contributes a Gradle Import Wizard to the Eclipse Import Wizards, which can be used to import the RxSWT project.
+
+Once the projects are imported you can play around, modify it or run the sample `App`.
+
+== Contributing
+
+Feedback and contributions are highly appreciated. So please *do not* hesitate to open issues or fork this repo and provide pull requests.
+
+I am also available on Twitter @simonscholz
+
+== LICENSE
+
+Copyright (c) 2017-present, RxSWT Contributors.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
