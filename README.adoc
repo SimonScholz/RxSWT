@@ -125,7 +125,7 @@ $ ./gradlew run
 
 === Importing the code
 
-In order to use and run the code in Eclipse you need to install the Buildship tooling, which is the official Gradle tooling for Eclipse.
+In order to use and run the code in the Eclipse IDE you need to install the Buildship tooling by either using the https://projects.eclipse.org/projects/tools.buildship/downloads[update site] or a https://marketplace.eclipse.org/content/buildship-gradle-integration[market place] installation.
 
 Buildship contributes a Gradle Import Wizard to the Eclipse Import Wizards, which can be used to import the RxSWT project.
 
@@ -135,7 +135,7 @@ Once the projects are imported you can play around, modify it or run the sample 
 
 Feedback and contributions are highly appreciated. So please *do not* hesitate to open issues or fork this repo and provide pull requests.
 
-I am also available on Twitter @simonscholz
+I am also available on Twitter https://twitter.com/simonscholz[@simonscholz]
 
 == LICENSE
 
