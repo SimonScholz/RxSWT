@@ -21,6 +21,7 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.custom.TableCursor;
 import org.eclipse.swt.custom.TreeCursor;
 import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -48,6 +49,8 @@ import org.eclipse.swt.widgets.Widget;
 
 import io.reactivex.Observable;
 import io.reactivex.swt.listener.dispose.DisposeObservable;
+import io.reactivex.swt.listener.key.KeyPressedObservable;
+import io.reactivex.swt.listener.key.KeyReleasedObservable;
 import io.reactivex.swt.listener.mouse.MouseDoubleClickObservable;
 import io.reactivex.swt.listener.mouse.MouseDownObservable;
 import io.reactivex.swt.listener.mouse.MouseEnterObservable;
@@ -67,6 +70,16 @@ public class SwtObservables {
 	public static Observable<Event> from(Widget widget, int eventType) {
 		checkNotNull(widget, "widget == null");
 		return new WidgetObservable(widget, eventType);
+	}
+
+	public static Observable<KeyEvent> keyPressed(Control control) {
+		checkNotNull(control, "control == null");
+		return new KeyPressedObservable(control);
+	}
+
+	public static Observable<KeyEvent> keyReleased(Control control) {
+		checkNotNull(control, "control == null");
+		return new KeyReleasedObservable(control);
 	}
 
 	public static Observable<MouseEvent> mouseEnter(Control control) {
