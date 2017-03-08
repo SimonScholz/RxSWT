@@ -25,6 +25,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.widgets.Button;
@@ -65,6 +66,7 @@ import io.reactivex.swt.listener.mouse.MouseEnterObservable;
 import io.reactivex.swt.listener.mouse.MouseExitObservable;
 import io.reactivex.swt.listener.mouse.MouseUpObservable;
 import io.reactivex.swt.listener.mouse.MouseWheelObservable;
+import io.reactivex.swt.listener.paint.PaintObservable;
 import io.reactivex.swt.listener.selection.SelectionObservable;
 import io.reactivex.swt.listener.widget.WidgetObservable;
 
@@ -148,6 +150,11 @@ public class SwtObservables {
 	public static Observable<MouseEvent> mouseScrolled(Control control) {
 		checkNotNull(control, "control == null");
 		return new MouseWheelObservable(control);
+	}
+
+	public static Observable<PaintEvent> paintControl(Control control) {
+		checkNotNull(control, "control == null");
+		return new PaintObservable(control);
 	}
 
 	/**
