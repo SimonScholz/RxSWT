@@ -20,6 +20,7 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.custom.TableCursor;
 import org.eclipse.swt.custom.TreeCursor;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
@@ -48,6 +49,8 @@ import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.Widget;
 
 import io.reactivex.Observable;
+import io.reactivex.swt.listener.control.ControlMovedObservable;
+import io.reactivex.swt.listener.control.ControlResizedObservable;
 import io.reactivex.swt.listener.dispose.DisposeObservable;
 import io.reactivex.swt.listener.key.KeyPressedObservable;
 import io.reactivex.swt.listener.key.KeyReleasedObservable;
@@ -70,6 +73,16 @@ public class SwtObservables {
 	public static Observable<Event> from(Widget widget, int eventType) {
 		checkNotNull(widget, "widget == null");
 		return new WidgetObservable(widget, eventType);
+	}
+
+	public static Observable<ControlEvent> controlResized(Control control) {
+		checkNotNull(control, "control == null");
+		return new ControlResizedObservable(control);
+	}
+
+	public static Observable<ControlEvent> controlMoved(Control control) {
+		checkNotNull(control, "control == null");
+		return new ControlMovedObservable(control);
 	}
 
 	public static Observable<KeyEvent> keyPressed(Control control) {
