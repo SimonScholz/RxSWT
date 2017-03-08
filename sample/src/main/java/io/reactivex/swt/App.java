@@ -16,7 +16,6 @@ package io.reactivex.swt;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -25,8 +24,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.swt.listener.SwtObservables;
 import io.reactivex.swt.schedulers.SwtSchedulers;
 
 public class App {
@@ -48,34 +49,33 @@ public class App {
 		Button button = new Button(shell, SWT.PUSH);
 		button.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
 		button.setText("Load data");
-		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
 
-				// Get an observable to subscribe to
-				Single<List<Contributor>> contributorsObservable = gitHubApi.contributors("eclipse",
-						"eclipse.platform.swt");
+		Observable<SelectionEvent> widgetSelected = SwtObservables.widgetSelected(button);
 
-				// Do query for contributors on another thread and sync with the
-				// SWT main thread.
-				// Comment out the next lines and see the UI freezing by trying
-				// to click the check button.
-				contributorsObservable = contributorsObservable.subscribeOn(Schedulers.io())
-						.observeOn(SwtSchedulers.currentDisplayThread());
+		widgetSelected.subscribe(e -> {
+			// Get an observable to subscribe to
+			Single<List<Contributor>> contributorsObservable = gitHubApi.contributors("eclipse",
+					"eclipse.platform.swt");
 
-				// Show the contributors in the text field by subscribing or on
-				// error do system print line
-				contributorsObservable.subscribe(contributors -> {
-					StringBuilder sb = new StringBuilder();
-					for (Contributor contributor : contributors) {
-						sb.append(contributor.getLogin());
-						sb.append(" : ");
-						sb.append(contributor.getContributions());
-						sb.append(LINE_SEPARATOR);
-					}
-					text.setText(sb.toString());
-				}, System.out::println);
-			}
+			// Do query for contributors on another thread and sync with the
+			// SWT main thread.
+			// Comment out the next lines and see the UI freezing by trying
+			// to click the check button.
+			contributorsObservable = contributorsObservable.subscribeOn(Schedulers.io())
+					.observeOn(SwtSchedulers.defaultDisplayThread());
+
+			// Show the contributors in the text field by subscribing or on
+			// error do system print line
+			contributorsObservable.subscribe(contributors -> {
+				StringBuilder sb = new StringBuilder();
+				for (Contributor contributor : contributors) {
+					sb.append(contributor.getLogin());
+					sb.append(" : ");
+					sb.append(contributor.getContributions());
+					sb.append(LINE_SEPARATOR);
+				}
+				text.setText(sb.toString());
+			}, System.out::println);
 		});
 
 		// This button is just intended to prove UI freezes, if no
