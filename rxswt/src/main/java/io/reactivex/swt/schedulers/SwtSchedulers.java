@@ -24,8 +24,6 @@ public class SwtSchedulers {
 
 	private static final class MainHolder {
 		static final Scheduler DEFAULT = new DisplayScheduler(Display.getDefault());
-
-		static final Scheduler CURRENT = new DisplayScheduler(Display.getCurrent());
 	}
 
 	private static final Scheduler DEFAULT_DISPLAY_THREAD = RxSwtPlugins
@@ -36,28 +34,12 @@ public class SwtSchedulers {
 				}
 			});
 
-	private static final Scheduler CURRENT_DISPLAY_THREAD = RxSwtPlugins
-			.initMainThreadScheduler(new Callable<Scheduler>() {
-				@Override
-				public Scheduler call() throws Exception {
-					return MainHolder.CURRENT;
-				}
-			});
-
 	/**
 	 * A {@link Scheduler} which executes actions on the SWT UI thread of the
 	 * default {@link Display}.
 	 */
 	public static Scheduler defaultDisplayThread() {
 		return RxSwtPlugins.onMainThreadScheduler(DEFAULT_DISPLAY_THREAD);
-	}
-
-	/**
-	 * A {@link Scheduler} which executes actions on the SWT UI thread of the
-	 * current {@link Display}.
-	 */
-	public static Scheduler currentDisplayThread() {
-		return RxSwtPlugins.onMainThreadScheduler(CURRENT_DISPLAY_THREAD);
 	}
 
 	/**
