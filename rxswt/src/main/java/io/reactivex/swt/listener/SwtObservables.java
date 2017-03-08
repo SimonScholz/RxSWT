@@ -26,6 +26,7 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
@@ -57,6 +58,7 @@ import io.reactivex.swt.listener.focus.FocusGainedObservable;
 import io.reactivex.swt.listener.focus.FocusLostObservable;
 import io.reactivex.swt.listener.key.KeyPressedObservable;
 import io.reactivex.swt.listener.key.KeyReleasedObservable;
+import io.reactivex.swt.listener.key.TraverseObservable;
 import io.reactivex.swt.listener.mouse.MouseDoubleClickObservable;
 import io.reactivex.swt.listener.mouse.MouseDownObservable;
 import io.reactivex.swt.listener.mouse.MouseEnterObservable;
@@ -77,7 +79,7 @@ public class SwtObservables {
 		checkNotNull(widget, "widget == null");
 		return new WidgetObservable(widget, eventType);
 	}
-	
+
 	public static Observable<FocusEvent> focusGained(Control control) {
 		checkNotNull(control, "control == null");
 		return new FocusGainedObservable(control);
@@ -106,6 +108,11 @@ public class SwtObservables {
 	public static Observable<KeyEvent> keyReleased(Control control) {
 		checkNotNull(control, "control == null");
 		return new KeyReleasedObservable(control);
+	}
+
+	public static Observable<TraverseEvent> keyTraversed(Control control) {
+		checkNotNull(control, "control == null");
+		return new TraverseObservable(control);
 	}
 
 	public static Observable<MouseEvent> mouseEnter(Control control) {
