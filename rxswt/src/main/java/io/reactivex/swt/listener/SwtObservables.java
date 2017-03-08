@@ -22,6 +22,7 @@ import org.eclipse.swt.custom.TableCursor;
 import org.eclipse.swt.custom.TreeCursor;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionEvent;
@@ -52,6 +53,8 @@ import io.reactivex.Observable;
 import io.reactivex.swt.listener.control.ControlMovedObservable;
 import io.reactivex.swt.listener.control.ControlResizedObservable;
 import io.reactivex.swt.listener.dispose.DisposeObservable;
+import io.reactivex.swt.listener.focus.FocusGainedObservable;
+import io.reactivex.swt.listener.focus.FocusLostObservable;
 import io.reactivex.swt.listener.key.KeyPressedObservable;
 import io.reactivex.swt.listener.key.KeyReleasedObservable;
 import io.reactivex.swt.listener.mouse.MouseDoubleClickObservable;
@@ -73,6 +76,16 @@ public class SwtObservables {
 	public static Observable<Event> from(Widget widget, int eventType) {
 		checkNotNull(widget, "widget == null");
 		return new WidgetObservable(widget, eventType);
+	}
+	
+	public static Observable<FocusEvent> focusGained(Control control) {
+		checkNotNull(control, "control == null");
+		return new FocusGainedObservable(control);
+	}
+
+	public static Observable<FocusEvent> focusLost(Control control) {
+		checkNotNull(control, "control == null");
+		return new FocusLostObservable(control);
 	}
 
 	public static Observable<ControlEvent> controlResized(Control control) {

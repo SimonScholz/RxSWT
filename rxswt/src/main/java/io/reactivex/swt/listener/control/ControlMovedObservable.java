@@ -25,7 +25,7 @@ public class ControlMovedObservable extends ControlObservable {
 	}
 
 	@Override
-	protected AbstractControlListener getMouseListener(Control control, Observer<? super ControlEvent> observer) {
+	protected AbstractControlListener getControlListener(Control control, Observer<? super ControlEvent> observer) {
 		return new AbstractControlListener(control) {
 			@Override
 			public void controlMoved(ControlEvent e) {

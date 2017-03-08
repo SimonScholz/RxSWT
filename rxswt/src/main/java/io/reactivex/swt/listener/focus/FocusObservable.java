@@ -11,10 +11,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.reactivex.swt.listener.control;
+package io.reactivex.swt.listener.focus;
 
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Control;
 
 import io.reactivex.Observable;
@@ -22,47 +22,47 @@ import io.reactivex.Observer;
 import io.reactivex.swt.MainThreadDisposable;
 import io.reactivex.swt.listener.util.Preconditions;
 
-public abstract class ControlObservable extends Observable<ControlEvent> {
+public abstract class FocusObservable extends Observable<FocusEvent> {
 
 	private Control control;
 
-	public ControlObservable(Control control) {
+	public FocusObservable(Control control) {
 		this.control = control;
 	}
 
 	@Override
-	protected void subscribeActual(Observer<? super ControlEvent> observer) {
+	protected void subscribeActual(Observer<? super FocusEvent> observer) {
 		if (!Preconditions.checkWidget(observer, control)) {
 			return;
 		}
-		AbstractControlListener listener = getControlListener(control, observer);
+		AbstractFocusListener listener = getFocusListener(control, observer);
 		observer.onSubscribe(listener);
 		control.addDisposeListener(e -> listener.dispose());
-		control.addControlListener(listener);
+		control.addFocusListener(listener);
 
 	}
 
-	protected abstract AbstractControlListener getControlListener(Control control,
-			Observer<? super ControlEvent> observer);
+	protected abstract AbstractFocusListener getFocusListener(Control control,
+			Observer<? super FocusEvent> observer);
 
-	static abstract class AbstractControlListener extends MainThreadDisposable implements ControlListener {
+	static abstract class AbstractFocusListener extends MainThreadDisposable implements FocusListener {
 		private final Control control;
 
-		AbstractControlListener(Control control) {
+		AbstractFocusListener(Control control) {
 			this.control = control;
 		}
 
 		@Override
 		protected void onDispose() {
-			control.removeControlListener(this);
+			control.removeFocusListener(this);
 		}
 
 		@Override
-		public void controlMoved(ControlEvent e) {
+		public void focusGained(FocusEvent e) {
 		}
 
 		@Override
-		public void controlResized(ControlEvent e) {
+		public void focusLost(FocusEvent e) {
 		}
 	}
 }

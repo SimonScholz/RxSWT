@@ -11,24 +11,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.reactivex.swt.listener.control;
+package io.reactivex.swt.listener.focus;
 
-import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Control;
 
 import io.reactivex.Observer;
 
-public class ControlResizedObservable extends ControlObservable {
+public class FocusGainedObservable extends FocusObservable {
 
-	public ControlResizedObservable(Control control) {
+	public FocusGainedObservable(Control control) {
 		super(control);
 	}
 
 	@Override
-	protected AbstractControlListener getControlListener(Control control, Observer<? super ControlEvent> observer) {
-		return new AbstractControlListener(control) {
+	protected AbstractFocusListener getFocusListener(Control control, Observer<? super FocusEvent> observer) {
+		return new AbstractFocusListener(control) {
 			@Override
-			public void controlResized(ControlEvent e) {
+			public void focusGained(FocusEvent e) {
 				if (!isDisposed()) {
 					observer.onNext(e);
 				}
