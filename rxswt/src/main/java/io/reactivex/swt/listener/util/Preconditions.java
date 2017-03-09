@@ -19,11 +19,20 @@ import io.reactivex.Observer;
 
 public class Preconditions {
 	public static boolean checkWidget(Observer<?> observer, Widget widget) {
-		if (!widget.isDisposed() && !(Thread.currentThread().equals(widget.getDisplay().getThread()))) {
+		if (null == widget) {
+			observer.onError(new NullPointerException("The given widget was null"));
+			return false;
+		} else if (widget.isDisposed()) {
+			observer.onError(new IllegalStateException("The given widget is diposed"));
+			return false;
+		} else if (!(Thread.currentThread().equals(widget.getDisplay().getThread()))) {
 			observer.onError(new IllegalStateException(
 					"Expected to be called on the main thread but was " + Thread.currentThread().getName()));
 			return false;
 		}
 		return true;
+	}
+
+	private Preconditions() {
 	}
 }
