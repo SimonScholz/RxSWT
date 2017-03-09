@@ -33,9 +33,11 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolItem;
 import org.eclipse.swt.widgets.DateTime;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Sash;
 import org.eclipse.swt.widgets.Scale;
@@ -54,6 +56,7 @@ import org.eclipse.swt.widgets.Widget;
 import io.reactivex.Observable;
 import io.reactivex.swt.listener.control.ControlMovedObservable;
 import io.reactivex.swt.listener.control.ControlResizedObservable;
+import io.reactivex.swt.listener.display.DisplayObservable;
 import io.reactivex.swt.listener.dispose.DisposeObservable;
 import io.reactivex.swt.listener.focus.FocusGainedObservable;
 import io.reactivex.swt.listener.focus.FocusLostObservable;
@@ -75,6 +78,28 @@ public class SwtObservables {
 	public static Observable<DisposeEvent> widgetDisposed(Widget widget) {
 		checkNotNull(widget, "widget == null");
 		return new DisposeObservable(widget);
+	}
+
+	public static Observable<Event> displayFilter(Display display, int eventType) {
+		checkNotNull(display, "display == null");
+		return new DisplayObservable(display, eventType) {
+
+			@Override
+			protected void addlistener(Listener listener) {
+				display.addFilter(eventType, listener);
+			}
+		};
+	}
+
+	public static Observable<Event> displayListener(Display display, int eventType) {
+		checkNotNull(display, "display == null");
+		return new DisplayObservable(display, eventType) {
+
+			@Override
+			protected void addlistener(Listener listener) {
+				display.addListener(eventType, listener);
+			}
+		};
 	}
 
 	public static Observable<Event> from(Widget widget, int eventType) {

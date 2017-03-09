@@ -13,6 +13,7 @@
  */
 package io.reactivex.swt.listener.util;
 
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Widget;
 
 import io.reactivex.Observer;
@@ -26,6 +27,21 @@ public class Preconditions {
 			observer.onError(new IllegalStateException("The given widget is diposed"));
 			return false;
 		} else if (!(Thread.currentThread().equals(widget.getDisplay().getThread()))) {
+			observer.onError(new IllegalStateException(
+					"Expected to be called on the main thread but was " + Thread.currentThread().getName()));
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean checkDisplay(Observer<?> observer, Display display) {
+		if (null == display) {
+			observer.onError(new NullPointerException("The given widget was null"));
+			return false;
+		} else if (display.isDisposed()) {
+			observer.onError(new IllegalStateException("The given widget is diposed"));
+			return false;
+		} else if (!(Thread.currentThread().equals(display.getThread()))) {
 			observer.onError(new IllegalStateException(
 					"Expected to be called on the main thread but was " + Thread.currentThread().getName()));
 			return false;
