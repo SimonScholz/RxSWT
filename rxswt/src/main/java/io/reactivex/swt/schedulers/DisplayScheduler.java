@@ -21,6 +21,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.swt.widgets.Display;
 
+/**
+ * {@link Scheduler}, which can be used to syncronize with the SWT main thread.
+ */
 final class DisplayScheduler extends Scheduler {
 	private final Display display;
 

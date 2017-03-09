@@ -25,9 +25,11 @@ import io.reactivex.swt.listener.util.Preconditions;
 public class SelectionObservable extends Observable<SelectionEvent> {
 
 	private Widget widget;
+	private SelectionAdapter selectionAdapter;
 
 	public SelectionObservable(Widget widget) {
 		this.widget = widget;
+		selectionAdapter = SelectionAdapter.create(widget);
 	}
 
 	@Override
@@ -35,7 +37,6 @@ public class SelectionObservable extends Observable<SelectionEvent> {
 		if (!Preconditions.checkWidget(observer, widget)) {
 			return;
 		}
-		SelectionAdapter selectionAdapter = SelectionAdapter.create(widget);
 
 		RxSelectionListener listener = new RxSelectionListener(selectionAdapter, observer);
 		observer.onSubscribe(listener);
