@@ -50,6 +50,8 @@ public class PreconditionsTest {
 		boolean checkWidget = Preconditions.checkWidget(testObserver, shell);
 
 		assertThat(checkWidget, is(true));
+
+		testObserver.assertNoErrors();
 	}
 
 	@Test
