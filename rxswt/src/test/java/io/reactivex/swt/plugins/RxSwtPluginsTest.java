@@ -31,161 +31,191 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.swt.testutil.EmptyScheduler;
 
 public final class RxSwtPluginsTest {
-    @Before @After
-    public void setUpAndTearDown() {
-        RxSwtPlugins.reset();
-    }
+	@Before
+	@After
+	public void setUpAndTearDown() {
+		RxSwtPlugins.reset();
+	}
 
-    @Test
-    public void mainThreadHandlerCalled() {
-        final AtomicReference<Scheduler> schedulerRef = new AtomicReference<>();
-        final Scheduler newScheduler = new EmptyScheduler();
-        RxSwtPlugins.setMainThreadSchedulerHandler(new Function<Scheduler, Scheduler>() {
-            @Override public Scheduler apply(Scheduler scheduler) {
-                schedulerRef.set(scheduler);
-                return newScheduler;
-            }
-        });
+	@Test(expected = NullPointerException.class)
+	public void testNullSchedulerThrowsNPE() {
+		RxSwtPlugins.onMainThreadScheduler(null);
+	}
 
-        Scheduler scheduler = new EmptyScheduler();
-        Scheduler actual = RxSwtPlugins.onMainThreadScheduler(scheduler);
-        assertSame(newScheduler, actual);
-        assertSame(scheduler, schedulerRef.get());
-    }
+	@Test(expected = NullPointerException.class)
+	public void testcallRequireNonNullThrowsNPE() {
+		RxSwtPlugins.callRequireNonNull(null);
+	}
 
-    @Test
-    public void resetClearsMainThreadHandler() {
-        RxSwtPlugins.setMainThreadSchedulerHandler(new Function<Scheduler, Scheduler>() {
-            @Override public Scheduler apply(Scheduler scheduler) {
-                throw new AssertionError();
-            }
-        });
-        RxSwtPlugins.reset();
+	@Test(expected = NullPointerException.class)
+	public void testapplyRequireNonNullThrowsNPE() {
+		RxSwtPlugins.applyRequireNonNull(new Function<Callable<Scheduler>, Scheduler>() {
 
-        Scheduler scheduler = new EmptyScheduler();
-        Scheduler actual = RxSwtPlugins.onMainThreadScheduler(scheduler);
-        assertSame(scheduler, actual);
-    }
+			@Override
+			public Scheduler apply(Callable<Scheduler> t) throws Exception {
+				return null;
+			}
+		}, null);
+	}
 
-    @Test
-    public void initMainThreadHandlerCalled() {
-        final AtomicReference<Callable<Scheduler>> schedulerRef = new AtomicReference<>();
-        final Scheduler newScheduler = new EmptyScheduler();
-        RxSwtPlugins
-                .setInitMainThreadSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
-                    @Override public Scheduler apply(Callable<Scheduler> scheduler) {
-                        schedulerRef.set(scheduler);
-                        return newScheduler;
-                    }
-                });
+	@Test
+	public void mainThreadHandlerCalled() {
+		final AtomicReference<Scheduler> schedulerRef = new AtomicReference<>();
+		final Scheduler newScheduler = new EmptyScheduler();
+		RxSwtPlugins.setMainThreadSchedulerHandler(new Function<Scheduler, Scheduler>() {
+			@Override
+			public Scheduler apply(Scheduler scheduler) {
+				schedulerRef.set(scheduler);
+				return newScheduler;
+			}
+		});
 
-        Callable<Scheduler> scheduler = new Callable<Scheduler>() {
-            @Override public Scheduler call() throws Exception {
-                throw new AssertionError();
-            }
-        };
-        Scheduler actual = RxSwtPlugins.initMainThreadScheduler(scheduler);
-        assertSame(newScheduler, actual);
-        assertSame(scheduler, schedulerRef.get());
-    }
+		Scheduler scheduler = new EmptyScheduler();
+		Scheduler actual = RxSwtPlugins.onMainThreadScheduler(scheduler);
+		assertSame(newScheduler, actual);
+		assertSame(scheduler, schedulerRef.get());
+	}
 
-    @Test
-    public void resetClearsInitMainThreadHandler() throws Exception {
-        RxSwtPlugins
-                .setInitMainThreadSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
-                    @Override public Scheduler apply(Callable<Scheduler> scheduler) {
-                        throw new AssertionError();
-                    }
-                });
+	@Test
+	public void resetClearsMainThreadHandler() {
+		RxSwtPlugins.setMainThreadSchedulerHandler(new Function<Scheduler, Scheduler>() {
+			@Override
+			public Scheduler apply(Scheduler scheduler) {
+				throw new AssertionError();
+			}
+		});
+		RxSwtPlugins.reset();
 
-        final Scheduler scheduler = new EmptyScheduler();
-        Callable<Scheduler> schedulerCallable = new Callable<Scheduler>() {
-            @Override public Scheduler call() throws Exception {
-                return scheduler;
-            }
-        };
+		Scheduler scheduler = new EmptyScheduler();
+		Scheduler actual = RxSwtPlugins.onMainThreadScheduler(scheduler);
+		assertSame(scheduler, actual);
+	}
 
-        RxSwtPlugins.reset();
+	@Test
+	public void initMainThreadHandlerCalled() {
+		final AtomicReference<Callable<Scheduler>> schedulerRef = new AtomicReference<>();
+		final Scheduler newScheduler = new EmptyScheduler();
+		RxSwtPlugins.setInitMainThreadSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
+			@Override
+			public Scheduler apply(Callable<Scheduler> scheduler) {
+				schedulerRef.set(scheduler);
+				return newScheduler;
+			}
+		});
 
-        Scheduler actual = RxSwtPlugins.initMainThreadScheduler(schedulerCallable);
-        assertSame(schedulerCallable.call(), actual);
-    }
+		Callable<Scheduler> scheduler = new Callable<Scheduler>() {
+			@Override
+			public Scheduler call() throws Exception {
+				throw new AssertionError();
+			}
+		};
+		Scheduler actual = RxSwtPlugins.initMainThreadScheduler(scheduler);
+		assertSame(newScheduler, actual);
+		assertSame(scheduler, schedulerRef.get());
+	}
 
-    @Test
-    public void defaultMainThreadSchedulerIsInitializedLazily() {
-        Function<Callable<Scheduler>, Scheduler> safeOverride =
-                new Function<Callable<Scheduler>, Scheduler>() {
-            @Override public Scheduler apply(Callable<Scheduler> scheduler) {
-                return new EmptyScheduler();
-            }
-        };
-        Callable<Scheduler> unsafeDefault = new Callable<Scheduler>() {
-            @Override public Scheduler call() throws Exception {
-                throw new AssertionError();
-            }
-        };
+	@Test
+	public void resetClearsInitMainThreadHandler() throws Exception {
+		RxSwtPlugins.setInitMainThreadSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
+			@Override
+			public Scheduler apply(Callable<Scheduler> scheduler) {
+				throw new AssertionError();
+			}
+		});
 
-       RxSwtPlugins.setInitMainThreadSchedulerHandler(safeOverride);
-       RxSwtPlugins.initMainThreadScheduler(unsafeDefault);
-    }
+		final Scheduler scheduler = new EmptyScheduler();
+		Callable<Scheduler> schedulerCallable = new Callable<Scheduler>() {
+			@Override
+			public Scheduler call() throws Exception {
+				return scheduler;
+			}
+		};
 
-    @Test
-    public void overrideInitMainSchedulerThrowsWhenSchedulerCallableIsNull() {
-        try {
-            RxSwtPlugins.initMainThreadScheduler(null);
-            fail();
-        } catch (NullPointerException e) {
-            assertEquals("scheduler == null", e.getMessage());
-        }
-    }
+		RxSwtPlugins.reset();
 
-    @Test
-    public void overrideInitMainSchedulerThrowsWhenSchedulerCallableReturnsNull() {
-        Callable<Scheduler> nullResultCallable = new Callable<Scheduler>() {
-            @Override public Scheduler call() throws Exception {
-                return null;
-            }
-        };
+		Scheduler actual = RxSwtPlugins.initMainThreadScheduler(schedulerCallable);
+		assertSame(schedulerCallable.call(), actual);
+	}
 
-        try {
-            RxSwtPlugins.initMainThreadScheduler(nullResultCallable);
-            fail();
-        } catch (NullPointerException e) {
-            assertEquals("Scheduler Callable returned null", e.getMessage());
-        }
-    }
+	@Test
+	public void defaultMainThreadSchedulerIsInitializedLazily() {
+		Function<Callable<Scheduler>, Scheduler> safeOverride = new Function<Callable<Scheduler>, Scheduler>() {
+			@Override
+			public Scheduler apply(Callable<Scheduler> scheduler) {
+				return new EmptyScheduler();
+			}
+		};
+		Callable<Scheduler> unsafeDefault = new Callable<Scheduler>() {
+			@Override
+			public Scheduler call() throws Exception {
+				throw new AssertionError();
+			}
+		};
 
-    @Test
-    public void getInitMainThreadSchedulerHandlerReturnsHandler() {
-        Function<Callable<Scheduler>, Scheduler> handler = new Function<Callable<Scheduler>, Scheduler>() {
-            @Override public Scheduler apply(Callable<Scheduler> schedulerCallable) throws Exception {
-                return Schedulers.trampoline();
-            }
-        };
-        RxSwtPlugins.setInitMainThreadSchedulerHandler(handler);
-        assertSame(handler, RxSwtPlugins.getInitMainThreadSchedulerHandler());
-    }
+		RxSwtPlugins.setInitMainThreadSchedulerHandler(safeOverride);
+		RxSwtPlugins.initMainThreadScheduler(unsafeDefault);
+	}
 
-    @Test
-    public void getMainThreadSchedulerHandlerReturnsHandler() {
-        Function<Scheduler, Scheduler> handler = new Function<Scheduler, Scheduler>() {
-            @Override public Scheduler apply(Scheduler scheduler) {
-                return Schedulers.trampoline();
-            }
-        };
-        RxSwtPlugins.setMainThreadSchedulerHandler(handler);
-        assertSame(handler, RxSwtPlugins.getOnMainThreadSchedulerHandler());
-    }
+	@Test
+	public void overrideInitMainSchedulerThrowsWhenSchedulerCallableIsNull() {
+		try {
+			RxSwtPlugins.initMainThreadScheduler(null);
+			fail();
+		} catch (NullPointerException e) {
+			assertEquals("scheduler == null", e.getMessage());
+		}
+	}
 
-    @Test
-    public void getInitMainThreadSchedulerHandlerReturnsNullIfNotSet() {
-        RxSwtPlugins.reset();
-        assertNull(RxSwtPlugins.getInitMainThreadSchedulerHandler());
-    }
+	@Test
+	public void overrideInitMainSchedulerThrowsWhenSchedulerCallableReturnsNull() {
+		Callable<Scheduler> nullResultCallable = new Callable<Scheduler>() {
+			@Override
+			public Scheduler call() throws Exception {
+				return null;
+			}
+		};
 
-    @Test
-    public void getMainThreadSchedulerHandlerReturnsNullIfNotSet() {
-        RxSwtPlugins.reset();
-        assertNull(RxSwtPlugins.getOnMainThreadSchedulerHandler());
-    }
+		try {
+			RxSwtPlugins.initMainThreadScheduler(nullResultCallable);
+			fail();
+		} catch (NullPointerException e) {
+			assertEquals("Scheduler Callable returned null", e.getMessage());
+		}
+	}
+
+	@Test
+	public void getInitMainThreadSchedulerHandlerReturnsHandler() {
+		Function<Callable<Scheduler>, Scheduler> handler = new Function<Callable<Scheduler>, Scheduler>() {
+			@Override
+			public Scheduler apply(Callable<Scheduler> schedulerCallable) throws Exception {
+				return Schedulers.trampoline();
+			}
+		};
+		RxSwtPlugins.setInitMainThreadSchedulerHandler(handler);
+		assertSame(handler, RxSwtPlugins.getInitMainThreadSchedulerHandler());
+	}
+
+	@Test
+	public void getMainThreadSchedulerHandlerReturnsHandler() {
+		Function<Scheduler, Scheduler> handler = new Function<Scheduler, Scheduler>() {
+			@Override
+			public Scheduler apply(Scheduler scheduler) {
+				return Schedulers.trampoline();
+			}
+		};
+		RxSwtPlugins.setMainThreadSchedulerHandler(handler);
+		assertSame(handler, RxSwtPlugins.getOnMainThreadSchedulerHandler());
+	}
+
+	@Test
+	public void getInitMainThreadSchedulerHandlerReturnsNullIfNotSet() {
+		RxSwtPlugins.reset();
+		assertNull(RxSwtPlugins.getInitMainThreadSchedulerHandler());
+	}
+
+	@Test
+	public void getMainThreadSchedulerHandlerReturnsNullIfNotSet() {
+		RxSwtPlugins.reset();
+		assertNull(RxSwtPlugins.getOnMainThreadSchedulerHandler());
+	}
 }
