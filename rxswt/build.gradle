@@ -6,40 +6,13 @@ apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 apply plugin: 'jacoco'
 
+sourceCompatibility = 1.8
+
 group 'io.reactivex.swt'
-version = '0.1.0'
-
-import org.apache.tools.ant.taskdefs.condition.Os
-
-final def ECLIPSE_WS = Os.isFamily(Os.FAMILY_UNIX) ? 'gtk' : Os.isFamily(Os.FAMILY_WINDOWS) ? 'win32' : Os.isFamily(Os.FAMILY_MAC) ? 'cocoa' : null
-
-final def ECLIPSE_OS = Os.isFamily(Os.FAMILY_UNIX) ? 'linux' : Os.isFamily(Os.FAMILY_WINDOWS) ? 'win32' : Os.isFamily(Os.FAMILY_MAC) ? 'macosx': null
-
-final def ECLIPSE_ARCH = System.properties['os.arch'].contains('64') ? 'x86_64' : 'x86'
-
-final def swtPluginId = "org.eclipse.swt.${ECLIPSE_WS}.${ECLIPSE_OS}.${ECLIPSE_ARCH}"
+version = '0.2.0'
 
 dependencies {
-
-	compile (group: 'org.eclipse.platform', name: "${swtPluginId}", version: '3.105.2') {
-		 exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.gtk.linux.ppc64'
-		 exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.win32.win32.x86_64'
-		 exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.win32.win32.x86'
-		 exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.gtk.linux.s390'
-		 exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.gtk.linux.aarch64'
-		 exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.gtk.linux.x86_64'
-		 exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.gtk.aix.ppc'
-		 exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.gtk.aix.ppc64'
-		 exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.gtk.solaris.x86_64'
-		 exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.gtk.linux.ppc64le'
-		 exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.cocoa.macosx.x86_64'
-		 exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.gtk.solaris.sparcv9'
-		 exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.gtk.linux.ppc'
-		 exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.gtk.hpux.ia64'
-		 exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.gtk.linux.x86'
-		 exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.gtk.linux.arm'
-		 exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.gtk.linux.s390x'
-	}
+	compile "org.eclipse.platform:org.eclipse.swt:3.105.3"
 
 	compile 'io.reactivex.rxjava2:rxjava:2.1.4'
 
@@ -145,8 +118,4 @@ jacocoTestReport {
 jacocoTestReport.dependsOn GCandMem
 
 build.dependsOn jacocoTestReport
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.4'
-}
 
