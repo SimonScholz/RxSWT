@@ -9,12 +9,12 @@ apply plugin: 'jacoco'
 sourceCompatibility = 1.8
 
 group 'io.reactivex.swt'
-version = '0.2.0'
+version = '0.3.0'
 
 dependencies {
-	compile "org.eclipse.platform:org.eclipse.swt:3.105.3"
+	compile "org.eclipse.platform:org.eclipse.swt:3.106.1"
 
-	compile 'io.reactivex.rxjava2:rxjava:2.1.4'
+	compile 'io.reactivex.rxjava2:rxjava:2.1.7'
 
 	testImplementation 'junit:junit:4.12'
 	testImplementation 'org.awaitility:awaitility:2.0.0'
@@ -66,7 +66,7 @@ publishing {
  			artifact javadocJar
             groupId 'io.reactivex.swt'
     		artifactId 'rxswt'
-    		version '0.1.0'
+    		version '0.3.0'
     		pom.withXml {
                 def root = asNode()
                 root.appendNode('description', 'RxSWT for the usage of RxJava with SWT')
@@ -91,10 +91,10 @@ bintray {
 		githubRepo = 'https://github.com/SimonScholz/RxSWT'
 		publicDownloadNumbers = true
 		version {
-        	name = '0.1.0'
+        	name = '0.3.0'
         	desc = 'RxSWT for the usage of RxJava with SWT'
         	released  = new Date()
-        	vcsTag = '0.1.0'
+        	vcsTag = '0.3.0'
  	   }
 	}
 }
