@@ -18,7 +18,7 @@ import java.util.concurrent.Callable;
 import org.eclipse.swt.widgets.Display;
 
 import io.reactivex.Scheduler;
-import io.reactivex.swt.plugins.RxSwtPlugins;
+import io.reactivex.swt.util.RxSwtPlugins;
 
 public class SwtSchedulers {
 

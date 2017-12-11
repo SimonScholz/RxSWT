@@ -25,8 +25,8 @@ import org.junit.Test;
 
 import io.reactivex.Scheduler;
 import io.reactivex.functions.Function;
-import io.reactivex.swt.plugins.RxSwtPlugins;
 import io.reactivex.swt.testutil.EmptyScheduler;
+import io.reactivex.swt.util.RxSwtPlugins;
 
 public final class SwtSchedulersTest {
 

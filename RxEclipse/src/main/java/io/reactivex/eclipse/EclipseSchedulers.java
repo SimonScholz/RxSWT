@@ -18,11 +18,13 @@ import java.util.concurrent.Callable;
 import org.eclipse.swt.widgets.Display;
 
 import io.reactivex.Scheduler;
+import io.reactivex.eclipse.scheduler.EclipseScheduler;
+import io.reactivex.eclipse.util.RxEclipsePlugins;
 
 public class EclipseSchedulers {
 
 	private static final class MainHolder {
-		static final Scheduler DEFAULT = new EclipseScheduler("Running");
+		static final Scheduler DEFAULT = new EclipseScheduler("Running...");
 	}
 
 	private static final Scheduler DEFAULT_DISPLAY_THREAD = RxEclipsePlugins

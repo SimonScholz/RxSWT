@@ -61,7 +61,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 
 publishing {
 	publications {
-		RxSWT(MavenPublication) {
+		RxSwt(MavenPublication) {
 			from components.java
  			artifact sourcesJar
  			artifact javadocJar
@@ -82,18 +82,18 @@ publishing {
 bintray {
 	user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
 	key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
-	publications = ['RxSWT']
+	publications = ['RxSwt']
 	publish = true
 	pkg {
 		repo = 'RxJava-Extensions'
-		name = 'RxSWT'
+		name = 'RxSwt'
 		licenses = ['Apache-2.0']
 		vcsUrl = 'https://github.com/SimonScholz/RxSWT.git'
 		githubRepo = 'https://github.com/SimonScholz/RxSWT'
 		publicDownloadNumbers = true
 		version {
         	name = '0.3.0'
-        	desc = 'RxSWT for the usage of RxJava with SWT'
+        	desc = 'RxSwt for the usage of RxJava with SWT'
         	released  = new Date()
         	vcsTag = '0.3.0'
  	   }

@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.reactivex.eclipse;
+package io.reactivex.eclipse.scheduler;
 
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.jobs.Job;
 /**
  * {@link Scheduler}, which can be used to syncronize with the SWT main thread.
  */
-final class EclipseScheduler extends Scheduler {
+public final class EclipseScheduler extends Scheduler {
 
 	private String title;
 

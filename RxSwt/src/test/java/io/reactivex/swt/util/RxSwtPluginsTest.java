@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.reactivex.swt.plugins;
+package io.reactivex.swt.util;
 
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
@@ -29,6 +29,7 @@ import io.reactivex.Scheduler;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.swt.testutil.EmptyScheduler;
+import io.reactivex.swt.util.RxSwtPlugins;
 
 public final class RxSwtPluginsTest {
 	@Before

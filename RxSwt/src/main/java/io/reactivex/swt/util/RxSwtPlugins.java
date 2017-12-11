@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.reactivex.eclipse;
+package io.reactivex.swt.util;
 
 import java.util.concurrent.Callable;
 
@@ -22,7 +22,7 @@ import io.reactivex.functions.Function;
 /**
  * Utility class to inject handlers to certain standard RxSWT operations.
  */
-public final class RxEclipsePlugins {
+public final class RxSwtPlugins {
 
     private static volatile Function<Callable<Scheduler>, Scheduler> onInitMainThreadHandler;
     private static volatile Function<Scheduler, Scheduler> onMainThreadHandler;
@@ -109,7 +109,7 @@ public final class RxEclipsePlugins {
         }
     }
 
-    private RxEclipsePlugins() {
+    private RxSwtPlugins() {
         throw new AssertionError("No instances.");
     }
 }
