@@ -13,41 +13,17 @@
  */
 package io.reactivex.eclipse;
 
-import java.util.concurrent.Callable;
-
-import org.eclipse.swt.widgets.Display;
-
 import io.reactivex.Scheduler;
 import io.reactivex.eclipse.scheduler.EclipseScheduler;
 import io.reactivex.eclipse.util.RxEclipsePlugins;
 
-public class EclipseSchedulers {
-
-	private static final class MainHolder {
-		static final Scheduler DEFAULT = new EclipseScheduler("Running...");
-	}
-
-	private static final Scheduler DEFAULT_DISPLAY_THREAD = RxEclipsePlugins
-			.initMainThreadScheduler(new Callable<Scheduler>() {
-				@Override
-				public Scheduler call() throws Exception {
-					return MainHolder.DEFAULT;
-				}
-			});
-
-	/**
-	 * A {@link Scheduler} which executes actions on the SWT UI thread of the
-	 * default {@link Display}.
-	 */
-	public static Scheduler defaultDisplayThread() {
-		return RxEclipsePlugins.onMainThreadScheduler(DEFAULT_DISPLAY_THREAD);
-	}
+public final class EclipseSchedulers {
 
 	/**
 	 * A {@link Scheduler} which executes actions on a {@code Display}.
 	 */
-	public static Scheduler withTitle(String title) {
-		return RxEclipsePlugins.onMainThreadScheduler(new EclipseScheduler(title));
+	public static Scheduler create(String jobName) {
+		return RxEclipsePlugins.onMainThreadScheduler(new EclipseScheduler(jobName));
 	}
 
 	private EclipseSchedulers() {

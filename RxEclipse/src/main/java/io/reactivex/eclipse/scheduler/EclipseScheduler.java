@@ -27,10 +27,10 @@ import org.eclipse.core.runtime.jobs.Job;
  */
 public final class EclipseScheduler extends Scheduler {
 
-	private String title;
+	private String jobName;
 
-	public EclipseScheduler(String title) {
-		this.title = title;
+	public EclipseScheduler(String jobName) {
+		this.jobName = jobName;
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public final class EclipseScheduler extends Scheduler {
 
 		ScheduledRunnable scheduled = new ScheduledRunnable(run);
 
-		executeRunnable(title, delay, unit, scheduled);
+		executeRunnable(jobName, delay, unit, scheduled);
 
 		return scheduled;
 	}
@@ -59,7 +59,7 @@ public final class EclipseScheduler extends Scheduler {
 
 	@Override
 	public Worker createWorker() {
-		return new EclipseWorker(title);
+		return new EclipseWorker(jobName);
 	}
 
 	private static final class EclipseWorker extends Worker {

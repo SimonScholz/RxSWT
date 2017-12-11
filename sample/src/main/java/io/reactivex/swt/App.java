@@ -62,7 +62,7 @@ public class App {
 			// Comment out the next lines and see the UI freezing by trying
 			// to click the check button.
 			contributorsObservable = contributorsObservable
-					.subscribeOn(EclipseSchedulers.withTitle("Fetching Contributors..."))
+					.subscribeOn(EclipseSchedulers.create("Fetching Contributors..."))
 					.observeOn(SwtSchedulers.defaultDisplayThread());
 
 			// Show the contributors in the text field by subscribing or on
