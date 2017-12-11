@@ -8,13 +8,16 @@ apply plugin: 'jacoco'
 
 sourceCompatibility = 1.8
 
-group 'io.reactivex.swt'
+group 'io.reactivex.eclipse'
 version = '0.3.0'
 
 dependencies {
-	compile "org.eclipse.platform:org.eclipse.swt:3.106.1"
+	api 'org.eclipse.platform:org.eclipse.core.runtime:3.13.0'
+	api 'org.eclipse.platform:org.eclipse.core.jobs:3.9.1'
+	api 'org.eclipse.platform:org.eclipse.jface:3.13.1'
+	api "org.eclipse.platform:org.eclipse.swt:3.106.1"
 
-	compile 'io.reactivex.rxjava2:rxjava:2.1.7'
+	implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
 
 	testImplementation 'junit:junit:4.12'
 	testImplementation 'org.awaitility:awaitility:2.0.0'
@@ -28,6 +31,7 @@ jar.doFirst {
 
         attributes 'Build-date': new Date();
         attributes 'Application-Version': project.version
+        attributes 'Bundle-Version': project.version
     }
 }
 
@@ -60,17 +64,17 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 
 publishing {
 	publications {
-		RxSWT(MavenPublication) {
+		RxEclipse(MavenPublication) {
 			from components.java
  			artifact sourcesJar
  			artifact javadocJar
-            groupId 'io.reactivex.swt'
-    		artifactId 'rxswt'
+            groupId 'io.reactivex.eclipse'
+    		artifactId 'rxeclipse'
     		version '0.3.0'
     		pom.withXml {
                 def root = asNode()
-                root.appendNode('description', 'RxSWT for the usage of RxJava with SWT')
-                root.appendNode('name', 'RxSWT')
+                root.appendNode('description', 'RxEclipse for the usage of RxJava with Eclipse')
+                root.appendNode('name', 'RxEclipse')
                 root.appendNode('url', 'https://github.com/SimonScholz/RxSWT')
                 root.children().last() + pomConfig
             }
@@ -85,14 +89,14 @@ bintray {
 	publish = true
 	pkg {
 		repo = 'RxJava-Extensions'
-		name = 'RxSWT'
+		name = 'RxEclipse'
 		licenses = ['Apache-2.0']
 		vcsUrl = 'https://github.com/SimonScholz/RxSWT.git'
 		githubRepo = 'https://github.com/SimonScholz/RxSWT'
 		publicDownloadNumbers = true
 		version {
         	name = '0.3.0'
-        	desc = 'RxSWT for the usage of RxJava with SWT'
+        	desc = 'RxEclipse for the usage of RxJava with Eclipse'
         	released  = new Date()
         	vcsTag = '0.3.0'
  	   }

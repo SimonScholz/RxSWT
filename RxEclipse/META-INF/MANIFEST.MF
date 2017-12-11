@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RxEclipse
+Bundle-SymbolicName: RxEclipse
+Bundle-Version: 0.3.0
+Bundle-Vendor: Simon Scholz
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

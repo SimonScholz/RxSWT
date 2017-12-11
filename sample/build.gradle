@@ -4,13 +4,14 @@ apply plugin: 'application'
 def final retrofitVersion = '2.3.0'
 
 dependencies {
-    compile project(':rxswt')
+    implementation project(':RxSwt')
+    implementation project(':RxEclipse')
 
-    compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
-    compile "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
-    compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
 
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 }
 
 mainClassName = 'io.reactivex.swt.App'

@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Text;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.eclipse.EclipseSchedulers;
 import io.reactivex.swt.listener.SwtObservables;
 import io.reactivex.swt.schedulers.SwtSchedulers;
 
@@ -55,13 +55,14 @@ public class App {
 		widgetSelected.subscribe(e -> {
 			// Get an observable to subscribe to
 			Single<List<Contributor>> contributorsObservable = gitHubApi.contributors("eclipse",
-					"eclipse.platform.swt");
+					"eclipse.platform.ui");
 
 			// Do query for contributors on another thread and sync with the
 			// SWT main thread.
 			// Comment out the next lines and see the UI freezing by trying
 			// to click the check button.
-			contributorsObservable = contributorsObservable.subscribeOn(Schedulers.io())
+			contributorsObservable = contributorsObservable
+					.subscribeOn(EclipseSchedulers.withTitle("Fetching Contributors..."))
 					.observeOn(SwtSchedulers.defaultDisplayThread());
 
 			// Show the contributors in the text field by subscribing or on
