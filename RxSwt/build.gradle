@@ -1,5 +1,5 @@
 plugins {
-    id "com.jfrog.bintray" version "1.7.3"
+    id "com.jfrog.bintray" version "1.8.0"
 }
 
 apply plugin: 'java-library'
@@ -9,7 +9,7 @@ apply plugin: 'jacoco'
 sourceCompatibility = 1.8
 
 group 'io.reactivex.swt'
-version = '0.3.0'
+version = '0.4.0'
 
 dependencies {
 	api "org.eclipse.platform:org.eclipse.swt:3.106.3"
@@ -92,10 +92,10 @@ bintray {
 		githubRepo = 'https://github.com/SimonScholz/RxSWT'
 		publicDownloadNumbers = true
 		version {
-        	name = '0.3.0'
+        	name = '0.4.0'
         	desc = 'RxSwt for the usage of RxJava with SWT'
         	released  = new Date()
-        	vcsTag = '0.3.0'
+        	vcsTag = '0.4.0'
  	   }
 	}
 }
