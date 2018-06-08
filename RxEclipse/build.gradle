@@ -9,7 +9,7 @@ apply plugin: 'jacoco'
 sourceCompatibility = 1.8
 
 group 'io.reactivex.eclipse'
-version = '0.3.0'
+version = '0.4.0'
 
 dependencies {
 	api 'org.eclipse.platform:org.eclipse.core.runtime:3.13.0'
@@ -70,7 +70,7 @@ publishing {
  			artifact javadocJar
             groupId 'io.reactivex.eclipse'
     		artifactId 'rxeclipse'
-    		version '0.3.0'
+    		version '0.4.0'
     		pom.withXml {
                 def root = asNode()
                 root.appendNode('description', 'RxEclipse for the usage of RxJava with Eclipse')
@@ -95,10 +95,10 @@ bintray {
 		githubRepo = 'https://github.com/SimonScholz/RxSWT'
 		publicDownloadNumbers = true
 		version {
-        	name = '0.3.0'
+        	name = '0.4.0'
         	desc = 'RxEclipse for the usage of RxJava with Eclipse'
         	released  = new Date()
-        	vcsTag = '0.3.0'
+        	vcsTag = '0.4.0'
  	   }
 	}
 }
